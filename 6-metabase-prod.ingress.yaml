@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    spec.ingressClassName: nginx
+  name: moodle-ingress 
+spec:
+  rules:
+  - host: ignaciochaves-moodle-web.my.kube.um.edu.ar
+    http:
+      paths:
+      - backend:
+          service:
+            name: moodle-service
+            port:
+              number: 80 
+        path: /
+        pathType: Prefix

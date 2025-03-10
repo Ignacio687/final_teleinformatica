@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: moodle
+  labels:
+    app: moodle
+spec:
+  ports:
+    - port: 80
+      name: http
+  selector:
+    app: moodle
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: moodle
+spec:
+  selector:
+    matchLabels:
+      app: moodle
+  serviceName: "moodle"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: moodle
+    spec:
+      containers:
+        - name: moodle
+          image: bitnami/moodle:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: moodle-config
+          env:
+            - name: MOODLE_DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: moodle-secret
+                  key: MOODLE_DATABASE_NAME
+            - name: MOODLE_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: moodle-secret
+                  key: MOODLE_DATABASE_USER
+            - name: MOODLE_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: moodle-secret
+                  key: MOODLE_DATABASE_PASSWORD
+          ports:
+            - containerPort: 80
+              name: http
+          volumeMounts:
+            - name: moodle-data
+              mountPath: /bitnami/moodle
+  volumeClaimTemplates:
+    - metadata:
+        name: moodle-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
