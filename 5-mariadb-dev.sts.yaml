@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: mariadb
-          image: bitnami/mariadb:latest
+          image: mariadb:latest
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:

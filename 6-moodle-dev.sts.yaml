@@ -26,6 +26,9 @@ spec:
       labels:
         app: moodle
     spec:
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
       containers:
         - name: moodle
           image: bitnami/moodle:latest
@@ -49,15 +52,26 @@ spec:
                 secretKeyRef:
                   name: moodle-secret
                   key: MOODLE_DATABASE_PASSWORD
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
           ports:
             - containerPort: 80
               name: http
           volumeMounts:
             - name: moodle-data
               mountPath: /bitnami/moodle
+            - name: moodledata-data
+              mountPath: /bitnami/moodledata
   volumeClaimTemplates:
     - metadata:
         name: moodle-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+    - metadata:
+        name: moodledata-data
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
