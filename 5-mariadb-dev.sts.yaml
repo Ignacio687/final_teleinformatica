@@ -16,13 +16,6 @@ spec:
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
-      initContainers:
-        - name: volume-permission-fix
-          image: busybox
-          command: ["sh", "-c", "chown -R 1001:1001 /bitnami/mariadb"]
-          volumeMounts:
-            - name: mariadb-data
-              mountPath: /bitnami/mariadb
       containers:
         - name: mariadb
           image: mariadb:latest
@@ -57,6 +50,13 @@ spec:
           volumeMounts:
             - name: mariadb-data
               mountPath: /bitnami/mariadb
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: mariadb-secret
+        - name: mariadb-data
+          persistentVolumeClaim:
+            claimName: mariadb-data
   volumeClaimTemplates:
     - metadata:
         name: mariadb-data
