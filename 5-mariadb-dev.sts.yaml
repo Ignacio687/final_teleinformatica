@@ -7,7 +7,7 @@ metadata:
 spec:
   ports:
     - port: 3306
-      name: hmariadb
+      name: mariadb
   selector:
     app: mariadb
 ---
