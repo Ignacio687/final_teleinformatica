@@ -26,10 +26,13 @@ spec:
       labels:
         app: mariadb
     spec:
+      securityContext:
+        fsGroup: 1001
+    spec:
       containers:
         - name: mariadb
           image: bitnami/mariadb:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
                 name: mariadb-config
