@@ -62,6 +62,11 @@ spec:
               mountPath: /bitnami/moodle
             - name: moodledata-data
               mountPath: /bitnami/moodledata
+            - name: moodle-apache
+              mountPath: /bitnami/apache
+      volumes:
+        - name: moodle-apache
+          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
         name: moodle-data

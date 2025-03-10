@@ -29,7 +29,6 @@ spec:
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
-    spec:
       containers:
         - name: mariadb
           image: mariadb:latest
