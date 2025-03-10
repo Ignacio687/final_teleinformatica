@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: mariadb
+    spec:
       containers:
         - name: mariadb
           image: mariadb:latest
