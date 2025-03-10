@@ -46,6 +46,11 @@ spec:
                 secretKeyRef:
                   name: moodle-secret
                   key: MOODLE_DATABASE_PASSWORD
+            - name: MOODLE_DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: moodle-config
+                  key: MOODLE_DATABASE_HOST
             - name: ALLOW_EMPTY_PASSWORD
               value: "yes"
           ports:
