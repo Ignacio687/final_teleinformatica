@@ -12,17 +12,10 @@ spec:
     metadata:
       labels:
         app: mariadb
-    spec:
-      securityContext:
-        fsGroup: 1001
-        runAsUser: 1001
       containers:
         - name: mariadb
           image: mariadb:latest
           imagePullPolicy: IfNotPresent
-          envFrom:
-            - configMapRef:
-                name: mariadb-config
           env:
             - name: MARIADB_ROOT_PASSWORD
               valueFrom:
@@ -57,6 +50,9 @@ spec:
         - name: mariadb-data
           persistentVolumeClaim:
             claimName: mariadb-data
+        - configMap:
+            name: mariadb-config
+          name: config-volume
   volumeClaimTemplates:
     - metadata:
         name: mariadb-data
