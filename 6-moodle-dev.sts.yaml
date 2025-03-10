@@ -56,8 +56,6 @@ spec:
               mountPath: /bitnami/moodle
             - name: moodledata-data
               mountPath: /bitnami/moodledata
-            - name: moodle-apache
-              mountPath: /bitnami/apache
       volumes:
         - name: secret-volume
           secret:
