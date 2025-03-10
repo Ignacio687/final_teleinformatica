@@ -26,16 +26,10 @@ spec:
       labels:
         app: moodle
     spec:
-      securityContext:
-        fsGroup: 1001
-        runAsUser: 1001
       containers:
         - name: moodle
           image: bitnami/moodle:latest
           imagePullPolicy: IfNotPresent
-          envFrom:
-            - configMapRef:
-                name: moodle-config
           env:
             - name: MOODLE_DATABASE_NAME
               valueFrom:
@@ -65,8 +59,18 @@ spec:
             - name: moodle-apache
               mountPath: /bitnami/apache
       volumes:
-        - name: moodle-apache
-          emptyDir: {}
+        - name: secret-volume
+          secret:
+            secretName: moodle-secret
+        - name: moodle-data
+          persistentVolumeClaim:
+            claimName: moodle-data
+        - name: moodledata-data
+          persistentVolumeClaim:
+            claimName: moodledata-data
+        - configMap:
+            name: moodle-config
+          name: config-volume
   volumeClaimTemplates:
     - metadata:
         name: moodle-data
